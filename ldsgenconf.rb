@@ -9,8 +9,12 @@ ldsgenconf = Twitter::REST::Client.new do |config|
 end
 
 do_not_rt = ["134902940"]
+count = 0
 
 ldsgenconf.search("#ldsconf", :since => Time.now.strftime("%Y-%m-%d")).each do |tweet|
     puts "#{tweet[:id]}"
+    count += 1
     ldsgenconf.retweet(tweet[:id]) unless do_not_rt.include? tweet[:user][:id_str]
 end
+
+puts count
