@@ -16,7 +16,7 @@ ldsgenconf.search("#ldsconf", :since => Time.now.strftime("%Y-%m-%d")).select { 
     # if this is a retweet, make sure the original tweet is
     # not from an undesirable user.
     if tweet[:retweeted_status] && do_not_rt.include? tweet[:retweeted_status][:user][:id] 
-        puts "Original tweet is from an undesirable user. Not retweeting"
+        puts "Original tweet is from an undesirable user. Not retweeting."
         next
     end
 
