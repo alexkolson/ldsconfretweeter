@@ -7,3 +7,8 @@ ldsgenconf = Twitter::REST::Client.new do |config|
     config.access_token        = "275914972-YZfFIB5lfYLfjtu3DCE85yIxqbLwyJW7AiKt2aEK"
     config.access_token_secret = "LtYFECJe6LzYU4AoE4UlLyVV5O7HazR9tdDAR67M"
 end
+
+ldsgenconf.search("#ldsconf").reverse_each do |tweet|
+    puts "#{tweet[:id]}"
+    ldsgenconf.retweet(tweet[:id]);
+end
