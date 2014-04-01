@@ -1,0 +1,2 @@
+require 'twitter'
+puts "done"
