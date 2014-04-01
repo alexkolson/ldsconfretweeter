@@ -8,7 +8,9 @@ ldsgenconf = Twitter::REST::Client.new do |config|
     config.access_token_secret = "LtYFECJe6LzYU4AoE4UlLyVV5O7HazR9tdDAR67M"
 end
 
-ldsgenconf.search("#ldsconf").reverse_each do |tweet|
+do_not_rt = ["134902940"]
+
+ldsgenconf.search("#ldsconf", :since => Time.now.strftime("%Y-%m-%d")).each do |tweet|
     puts "#{tweet[:id]}"
-    ldsgenconf.retweet(tweet[:id]);
+    ldsgenconf.retweet(tweet[:id]) unless do_not_rt.include? tweet[:user][:id_str]
 end
