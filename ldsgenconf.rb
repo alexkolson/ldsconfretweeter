@@ -21,7 +21,9 @@ do_not_rt = [
 
 count = 0
 
-ldsgenconf.search("#ldsconf", :since => Time.now.strftime("%Y-%m-%d")).select { |tweet| not do_not_rt.include? tweet[:user][:id] }.each do |tweet|
+last_checked = File.open("last_checked.txt").read
+
+ldsgenconf.search("#ldsconf", :since => last_checked).select { |tweet| not do_not_rt.include? tweet[:user][:id] }.each do |tweet|
 
     # if this is a retweet, make sure the original tweet is
     # not from an undesirable user.
@@ -33,9 +35,14 @@ ldsgenconf.search("#ldsconf", :since => Time.now.strftime("%Y-%m-%d")).select { 
     puts tweet[:user][:id]
     puts tweet[:id]
     puts tweet[:text]
-    ldsgenconf.retweet(tweet[:id])
+    puts tweet[:created_at]
+    #ldsgenconf.retweet(tweet[:id])
     count += 1
-    sleep(5)
+    #sleep(5)
 end
 
 puts count
+puts last_checked
+File.open("last_checked.txt", "w") do |file|
+    file.puts Time.now.to_s + "\r\n"
+end
