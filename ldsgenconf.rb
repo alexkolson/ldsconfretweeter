@@ -45,7 +45,7 @@ ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not 
         next
     end
 
-    puts "attempting to retweet #{{tweet[:id]}}."
+    puts "attempting to retweet #{tweet[:id]}."
     ldsgenconf.retweet(tweet[:id])
     count += 1
     sleep(5)
