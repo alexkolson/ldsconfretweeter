@@ -77,12 +77,14 @@ ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not 
 end
 
 word = "retweets"
+action_helper = "were"
 
 if count == 1
     word = "retweet"
+    action_helper = "was"
 end
 
-puts "#{count} #{word} were attempted."
+puts "#{count} #{word} #{action_helper} attempted."
 
 File.open("last_checked.txt", "w") do |file|
     file.puts checked + "\r\n"
