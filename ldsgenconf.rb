@@ -24,9 +24,19 @@ do_not_rt = [
 
 count = 0
 
-last_checked = File.open("last_checked.txt").read
+last_checked = File.open("last_checked.txt").read.split(" ")
+last_checked_date = last_checked[0]
+last_checked_time = last_checked[1].gsub(":", "")
 
-ldsgenconf.search("#ldsconf", :since => last_checked).select { |tweet| not do_not_rt.include? tweet[:user][:id] }.each do |tweet|
+ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not do_not_rt.include? tweet[:user][:id] }.each do |tweet|
+    created_at_time = tweet[:created_at].to_s.split(" ")[1].gsub(":", "")
+
+    # if this tweet was created before the last time the bot ran,
+    # do nothing.
+    if created_at_time < last_checked_time
+        puts "tweet #{tweet[:id]} is too old. Not retweeting."
+        next
+    end
 
     # if this is a retweet, make sure the original tweet is
     # not from an undesirable user.
@@ -35,17 +45,14 @@ ldsgenconf.search("#ldsconf", :since => last_checked).select { |tweet| not do_no
         next
     end
 
-    puts tweet[:user][:id]
-    puts tweet[:id]
-    puts tweet[:text]
-    puts tweet[:created_at]
-    #ldsgenconf.retweet(tweet[:id])
+    puts "attempting to retweet #{{tweet[:id]}}."
+    ldsgenconf.retweet(tweet[:id])
     count += 1
-    #sleep(5)
+    sleep(5)
 end
 
-puts count
-puts last_checked
+puts "#{count} retweets were attempted."
+
 File.open("last_checked.txt", "w") do |file|
     file.puts Time.now.to_s + "\r\n"
 end
