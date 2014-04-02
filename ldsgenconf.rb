@@ -40,7 +40,8 @@ do_not_rt = [
     24820235,
     237320196,
     382910432,
-    2202958129
+    2202958129,
+    1320657432
 ]
 
 count = 0
@@ -73,7 +74,7 @@ ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not 
     puts "attempting to retweet #{tweet[:id]}."
     ldsgenconf.retweet(tweet[:id])
     count += 1
-    sleep(0.2)
+    sleep(0.5)
 end
 
 word = "retweets"
