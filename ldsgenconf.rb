@@ -59,7 +59,7 @@ last_checked_time = last_checked[1].gsub(":", "")
 
 checked = Time.now.to_s
 
-ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not do_not_rt.include? tweet[:user][:id] }.reverse_each do |tweet|
+ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not do_not_rt.include? tweet[:user][:id] }.take(20).reverse_each do |tweet|
     created_at = tweet[:created_at].to_s.split(" ")
     created_at_time = created_at[1].gsub(":", "")
     created_at_date = created_at[0]
@@ -81,7 +81,7 @@ ldsgenconf.search("#ldsconf", :since => last_checked_date).select { |tweet| not 
     puts "attempting to retweet #{tweet[:id]}."
     ldsgenconf.retweet(tweet[:id])
     count += 1
-    sleep(0.5)
+    sleep(1)
 end
 
 word = "retweets"
